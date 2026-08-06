@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Leave Portal | Apply for Leave</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- App styles -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<header class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark"><i class="fa-solid fa-graduation-cap"></i></span>
+      <span>
+        Campus Leave Portal
+        <span class="brand-sub">Apply without login</span>
+      </span>
+    </a>
+    <nav class="navbar-links">
+      <a href="admin.html" class="nav-link pill"><i class="fa-solid fa-user-shield"></i> <span class="full">Admin Login</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="container">
+    <span class="hero-eyebrow"><i class="fa-solid fa-bolt"></i> No sign-up required</span>
+    <h1>Submit your leave application in under two minutes.</h1>
+    <p>Fill in your details below and we'll notify your department. Track nothing, remember nothing — just submit and go about your day.</p>
+  </div>
+</section>
+
+<!-- ===================== FORM CARD ===================== -->
+<main class="container">
+
+  <div class="form-card">
+
+    <!-- ---- FORM STATE (shown by default) ---- -->
+    <div id="formState">
+      <div class="form-card-header">
+        <div>
+          <h2>Leave Application Form</h2>
+          <p>Fields marked with <strong>*</strong> are required.</p>
+        </div>
+        <div class="section-number">01</div>
+      </div>
+
+      <form id="leaveForm" novalidate>
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="studentName">Student Name *</label>
+            <input type="text" id="studentName" name="studentName" placeholder="e.g. Aarav Sharma" autocomplete="name">
+            <span class="field-error" id="err-studentName"></span>
+          </div>
+
+          <div class="field">
+            <label for="rollNumber">Roll Number *</label>
+            <input type="text" id="rollNumber" name="rollNumber" placeholder="e.g. 21CS045">
+            <span class="field-error" id="err-rollNumber"></span>
+          </div>
+
+          <div class="field">
+            <label for="studentClass">Class *</label>
+            <input type="text" id="studentClass" name="studentClass" placeholder="e.g. TY B.Tech">
+            <span class="field-error" id="err-studentClass"></span>
+          </div>
+
+          <div class="field">
+            <label for="department">Department *</label>
+            <input type="text" id="department" name="department" placeholder="e.g. Computer Science">
+            <span class="field-error" id="err-department"></span>
+          </div>
+
+          <div class="field">
+            <label for="mobile">Mobile Number *</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric">
+            <span class="field-error" id="err-mobile"></span>
+          </div>
+
+          <div class="field">
+            <label for="email">Email <span class="optional">(optional)</span></label>
+            <input type="email" id="email" name="email" placeholder="you@example.com">
+            <span class="field-error" id="err-email"></span>
+          </div>
+
+          <div class="field">
+            <label for="leaveFrom">Leave From *</label>
+            <input type="date" id="leaveFrom" name="leaveFrom">
+            <span class="field-error" id="err-leaveFrom"></span>
+          </div>
+
+          <div class="field">
+            <label for="leaveTo">Leave To *</label>
+            <input type="date" id="leaveTo" name="leaveTo">
+            <span class="field-error" id="err-leaveTo"></span>
+          </div>
+
+          <div class="field">
+            <label for="totalDays">Total Leave Days</label>
+            <input type="text" id="totalDays" class="readonly-field" readonly placeholder="Auto-calculated">
+            <span class="field-hint">Calculated automatically from your selected dates.</span>
+          </div>
+
+          <div class="field full">
+            <label for="reason">Leave Reason *</label>
+            <textarea id="reason" name="reason" placeholder="Briefly describe the reason for your leave..."></textarea>
+            <span class="field-error" id="err-reason"></span>
+          </div>
+
+        </div>
+
+        <div style="margin-top: 8px;">
+          <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+            <span id="submitBtnText"><i class="fa-solid fa-paper-plane"></i> Submit Application</span>
+            <span class="spinner hidden" id="submitSpinner"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ---- SUCCESS STATE (hidden by default) ---- -->
+    <div id="successState" class="success-panel hidden">
+      <div class="check-circle"><i class="fa-solid fa-check"></i></div>
+      <h3>Application Submitted Successfully!</h3>
+      <p>Your leave request has been recorded with the status below. The admin office will review it shortly.</p>
+
+      <div class="summary-box" id="summaryBox">
+        <!-- Filled dynamically by script.js -->
+      </div>
+
+      <button class="btn btn-ghost" id="newApplicationBtn"><i class="fa-solid fa-rotate-left"></i> Submit Another Application</button>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    &copy; <span id="year"></span> Campus Leave Portal. Built for students, by the administration.
+  </footer>
+</main>
+
+<!-- Toasts -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner dark"></div>
+  <span>Submitting your application...</span>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<!-- Firebase compat SDK (no build tools required) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="firebase.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

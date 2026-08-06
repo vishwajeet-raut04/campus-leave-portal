@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | Campus Leave Portal Admin</title>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="dash-shell">
+
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+
+<a href="dashboard.html" class="brand">
+
+<span class="brand-mark">
+<i class="fa-solid fa-graduation-cap"></i>
+</span>
+
+
+<span>
+Campus Leave
+<span class="brand-sub">
+Admin Panel
+</span>
+</span>
+
+
+</a>
+
+
+
+
+<nav class="sidebar-nav">
+
+
+<a href="dashboard.html" class="sidebar-link active">
+
+<i class="fa-solid fa-table-columns"></i>
+
+Dashboard
+
+</a>
+
+
+
+<a href="index.html" class="sidebar-link" target="_blank">
+
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+View Public Form
+
+</a>
+
+
+</nav>
+
+
+
+
+<div class="sidebar-footer">
+
+
+<button class="logout-btn" id="logoutBtn">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Logout
+
+</button>
+
+
+</div>
+
+
+
+</aside>
+
+
+
+
+
+<!-- ================= MAIN ================= -->
+
+
+<main class="dash-main">
+
+
+
+<div class="dash-topbar">
+
+
+<div>
+
+<h1>
+Leave Applications
+</h1>
+
+
+<p>
+View and manage student leave applications.
+</p>
+
+
+</div>
+
+
+
+
+<button class="btn btn-ghost btn-sm" id="refreshBtn">
+
+<i class="fa-solid fa-arrows-rotate"></i>
+
+Refresh
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="dash-content">
+
+
+
+<!-- ============== STAT CARD ============== -->
+
+
+<div class="stats-grid">
+
+
+<div class="stat-card total">
+
+
+<div class="stat-top">
+
+<span class="stat-icon">
+
+<i class="fa-solid fa-layer-group"></i>
+
+</span>
+
+</div>
+
+
+
+<div class="stat-value" id="statTotal">
+
+0
+
+</div>
+
+
+
+<div class="stat-label">
+
+Total Applications
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ============== TABLE ============== -->
+
+
+<div class="table-card">
+
+
+
+<div class="table-toolbar">
+
+
+
+<div class="search-box">
+
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+
+<input 
+type="text"
+id="searchInput"
+placeholder="Search by student name or roll number..."
+>
+
+
+</div>
+
+
+
+
+
+
+<select class="select-filter" id="sortFilter">
+
+
+<option value="latest">
+
+Sort: Latest First
+
+</option>
+
+
+
+<option value="oldest">
+
+Sort: Oldest First
+
+</option>
+
+
+
+</select>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="table-scroll">
+
+
+
+<table class="leave-table">
+
+
+
+<thead>
+
+
+<tr>
+
+
+<th>
+Student Name
+</th>
+
+
+<th>
+Roll No.
+</th>
+
+
+<th>
+Class
+</th>
+
+
+<th>
+Department
+</th>
+
+
+<th>
+Mobile
+</th>
+
+
+<th>
+Leave From
+</th>
+
+
+<th>
+Leave To
+</th>
+
+
+<th>
+Days
+</th>
+
+
+<th>
+Reason
+</th>
+
+
+<th>
+Submitted
+</th>
+
+
+<th>
+Actions
+</th>
+
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+
+
+<tbody id="tableBody">
+
+<!-- Firebase Data -->
+
+</tbody>
+
+
+
+
+
+</table>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="empty-state hidden" id="emptyState">
+
+
+<i class="fa-regular fa-folder-open"></i>
+
+
+<p>
+No leave applications found.
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+</main>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ================= MODAL ================= -->
+
+
+<div class="modal-overlay" id="modalOverlay">
+
+
+<div class="modal-card">
+
+
+
+<div class="modal-head">
+
+
+<h2>
+
+<i class="fa-solid fa-file-lines"></i>
+
+Application Details
+
+</h2>
+
+
+
+<button class="modal-close" id="modalCloseBtn">
+
+
+<i class="fa-solid fa-xmark"></i>
+
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<div id="modalBody">
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- TOAST -->
+
+<div class="toast-wrap" id="toastWrap">
+
+</div>
+
+
+
+
+
+
+
+<!-- LOADING -->
+
+<div class="loading-overlay" id="loadingOverlay">
+
+
+<div class="spinner dark"></div>
+
+
+<span>
+Loading applications...
+</span>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- FIREBASE -->
+
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
+
+<script src="firebase.js"></script>
+
+<script src="admin.js"></script>
+
+<script src="dashboard.js"></script>
+
+
+
+</body>
+
+</html>
